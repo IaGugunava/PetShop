@@ -11,9 +11,9 @@ namespace PetShop.Interfaces
         void UpdateUser(User user);
         void DeleteUserById(int id);
         void SetRefreshToken(User user, RefreshToken refreshToken);
-        string CreateToken(User user);
+        string GenerateToken(User user);
         RefreshToken GenerateRefreshToken();
-        void OrderPet(int userId, int petId);
+        Order OrderPet(int userId, int petId);
 
     }
 }

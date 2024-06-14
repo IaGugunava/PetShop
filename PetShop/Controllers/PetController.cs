@@ -50,13 +50,12 @@ namespace PetShop.Controllers
             try
             {
                 _petRepository.CreatePet(pet);
+                return Ok(pet);
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
-
-            return NoContent();
         }
 
         [HttpPut]
@@ -65,13 +64,13 @@ namespace PetShop.Controllers
             try
             {
                 _petRepository.UpdatePet(pet);
+                return Ok(pet);
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
 
-            return NoContent();
         }
 
         [HttpDelete]
@@ -80,13 +79,12 @@ namespace PetShop.Controllers
             try
             {
                 _petRepository.DeletePetById(id);
+                return Ok();
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
-
-            return NoContent();
         }
     }
 }

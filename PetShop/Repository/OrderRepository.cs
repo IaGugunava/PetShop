@@ -41,7 +41,7 @@ namespace PetShop.Repository
 
         public void DeleteOredrById(int id)
         {
-            Order oredr = _context.Orders.SingleOrDefault(p => p.OrderId == id);
+            Order order = _context.Orders.SingleOrDefault(p => p.OrderId == id);
             _context.Remove(order);
         }
     }

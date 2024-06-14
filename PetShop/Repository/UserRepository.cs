@@ -42,7 +42,13 @@ namespace PetShop.Repository
 
         public User GetUserById(int id)
         {
-            return _context.Users.SingleOrDefault(x => x.UserId == id);
+            var user = _context.Users.SingleOrDefault(x => x.UserId == id);
+            if(user  == null)
+            {
+                throw new DllNotFoundException(); 
+            }
+
+            return user;
         }
 
         public IEnumerable<User> GetUsers()
@@ -62,6 +68,9 @@ namespace PetShop.Repository
             if(user != null)
             {
                 _context.Users.Remove(user);
+            } else
+            {
+                throw new DllNotFoundException();
             }
         }
 
@@ -72,13 +81,12 @@ namespace PetShop.Repository
             _context.SaveChanges();
         }
 
-        public string CreateToken(User user)
+        public string GenerateToken(User user)
         {
             List<Claim> claims = new List<Claim>
-        {
-            new Claim(ClaimTypes.Name, user.Email),
-            new Claim(ClaimTypes.Role, "User")
-        };
+            {
+                new Claim(ClaimTypes.Name, user.Email),
+            };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
@@ -103,7 +111,7 @@ namespace PetShop.Repository
             return refreshToken;
         }
 
-        public void OrderPet(int userId, int petId)
+        public Order OrderPet(int userId, int petId)
         {
             var user = GetUserById(userId);
 
@@ -118,6 +126,7 @@ namespace PetShop.Repository
 
             _context.Orders.Add(order);
             _context.SaveChanges();
+            return order;
         }
 
         private void HashPassword(string pass, out byte[] passwordHash, out byte[] passwordSalt)
